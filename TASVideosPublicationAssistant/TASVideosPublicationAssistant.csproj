@@ -1,0 +1,67 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>WinExe</OutputType>
+    <TargetFramework>net5.0-windows</TargetFramework>
+    <Nullable>enable</Nullable>
+    <UseWPF>true</UseWPF>
+    <ApplicationIcon>Resources\torrent_dark.ico</ApplicationIcon>
+    <Configurations>Debug;Release</Configurations>
+    <ProduceReferenceAssembly>False</ProduceReferenceAssembly>
+	<GenerateAssemblyInfo>False</GenerateAssemblyInfo>
+	<DebugType>full</DebugType>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="AdonisUI.ClassicTheme" Version="1.17.1" />
+    <PackageReference Include="AsyncAwaitBestPractices.MVVM" Version="6.0.3" />
+    <PackageReference Include="CredentialManagement.Standard" Version="1.0.4" />
+    <PackageReference Include="Net.Torrent" Version="1.0.2" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Include="Resources\lang_codes.txt" />
+    <Resource Include="Resources\torrent_dark.ico">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Resources\torrent_light.ico">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </Resource>
+  </ItemGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Update="Resources\Resources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <Compile Update="Resources\Resources.Designer.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
+    <None Update="Properties\Settings.settings">
+      <Generator>SettingsSingleFileGenerator</Generator>
+      <LastGenOutput>Settings.Designer.cs</LastGenOutput>
+    </None>
+    <Compile Update="Properties\Settings.Designer.cs">
+      <DesignTimeSharedInput>True</DesignTimeSharedInput>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Settings.settings</DependentUpon>
+    </Compile>
+  </ItemGroup>
+
+  <!-- DEBUG only stuff. -->
+  <ItemGroup Condition="'$(Configuration)'=='Debug'">
+    <PackageReference Include="RichardSzalay.MockHttp" Version="6.0.0" />
+    <EmbeddedResource Update="Resources\MockData.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>MockData.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <Compile Update="Resources\MockData.Designer.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>MockData.resx</DependentUpon>
+    </Compile>
+  </ItemGroup>
+
+</Project>

@@ -1,0 +1,20 @@
+﻿<Application x:Class="TASVideosPublicationAssistant.App"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:local="clr-namespace:TASVideosPublicationAssistant"
+             StartupUri="MainWindow.xaml">
+    <Application.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="pack://application:,,,/AdonisUI;component/ColorSchemes/Light.xaml"/>
+                <ResourceDictionary Source="pack://application:,,,/AdonisUI.ClassicTheme;component/Resources.xaml"/>
+            </ResourceDictionary.MergedDictionaries>
+
+            <local:BoolToVisibilityConverter x:Key="VisibilityConverter" FalseValue="Hidden"/>
+            <local:InvertBooleanConverter x:Key="BooleanInverter"/>
+            <local:NotNullConverter x:Key="NotNullConverter"/>
+            <local:NotWhitespaceConverter x:Key="NotWhitespaceConverter"/>
+            <local:IndeterminateProgressConverter x:Key="IndeterminateConverter"/>
+        </ResourceDictionary>
+    </Application.Resources>
+</Application>

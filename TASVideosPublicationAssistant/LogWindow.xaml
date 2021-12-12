@@ -1,0 +1,49 @@
+﻿<adonisControls:AdonisWindow x:Class="TASVideosPublicationAssistant.LogWindow"
+                             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                             xmlns:adonisUi="clr-namespace:AdonisUI;assembly=AdonisUI"
+                             xmlns:adonisControls="clr-namespace:AdonisUI.Controls;assembly=AdonisUI"
+                             xmlns:local="clr-namespace:TASVideosPublicationAssistant"
+                             Title="Log" IconVisibility="Collapsed" WindowStyle="ToolWindow"
+                             PlaceTitleBarOverContent="True" Width="400" Height="400"
+                             DataContext="{Binding RelativeSource={RelativeSource Self}}">
+
+    <adonisControls:AdonisWindow.Resources>
+        <local:LogColorConverter x:Key="LogColorConverter"
+                                 Default="{StaticResource {x:Static adonisUi:Brushes.DisabledForegroundBrush}}"
+                                 Http="{StaticResource {x:Static adonisUi:Brushes.DisabledForegroundBrush}}"
+                                 Information="{StaticResource {x:Static adonisUi:Brushes.ForegroundBrush}}"
+                                 Warning="Yellow"
+                                 Error="Red"/>
+
+        <Style x:Key="ColorText" TargetType="TextBlock">
+            <Setter Property="FontFamily" Value="Global Monospace"/>
+            <Setter Property="Foreground" Value="{Binding RelativeSource={RelativeSource Self}, Path=Text, Converter={StaticResource LogColorConverter}}"/>
+        </Style>
+    </adonisControls:AdonisWindow.Resources>
+
+    <GroupBox Header=""> <!-- Need empty content to get header to show up - titlebar covers it. -->
+        <ItemsControl ItemsSource="{Binding Log}" AlternationCount="2">
+
+            <ItemsControl.Template>
+                <ControlTemplate>
+                    <ScrollViewer CanContentScroll="True" ScrollChanged="ScrollViewer_ScrollChanged">
+                        <ItemsPresenter/>
+                    </ScrollViewer>
+                </ControlTemplate>
+            </ItemsControl.Template>
+
+            <ItemsControl.ItemsPanel>
+                <ItemsPanelTemplate>
+                    <VirtualizingStackPanel IsItemsHost="True"/>
+                </ItemsPanelTemplate>
+            </ItemsControl.ItemsPanel>
+
+            <ItemsControl.ItemTemplate>
+                <DataTemplate>
+                    <TextBlock Text="{Binding}" Style="{StaticResource ColorText}"/>
+                </DataTemplate>
+            </ItemsControl.ItemTemplate>
+        </ItemsControl>
+    </GroupBox>
+</adonisControls:AdonisWindow>

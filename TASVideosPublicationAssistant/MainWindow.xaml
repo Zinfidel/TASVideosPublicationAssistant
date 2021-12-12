@@ -1,0 +1,287 @@
+﻿<adonisControls:AdonisWindow x:Class="TASVideosPublicationAssistant.MainWindow"
+                             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                             xmlns:local="clr-namespace:TASVideosPublicationAssistant"
+                             xmlns:adonisUi="clr-namespace:AdonisUI;assembly=AdonisUI"
+                             xmlns:adonisControls="clr-namespace:AdonisUI.Controls;assembly=AdonisUI"
+                             xmlns:adonisExtensions="clr-namespace:AdonisUI.Extensions;assembly=AdonisUI"
+                             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+                             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+                             mc:Ignorable="d"
+                             d:DataContext="{d:DesignInstance Type=local:MainViewModel, IsDesignTimeCreatable=True}"
+                             Title="TASVideos Publication Assistant" Width="700" SizeToContent="Height">
+
+    <!-- This style has a trigger to change the application icon based on the chosen theme. -->
+    <adonisControls:AdonisWindow.Style>
+        <Style TargetType="adonisControls:AdonisWindow" BasedOn="{StaticResource {x:Type adonisControls:AdonisWindow}}">
+            <Setter Property="Icon" Value="pack://application:,,,/Resources/torrent_dark.ico"/>
+            <Style.Triggers>
+                <DataTrigger Binding="{Binding IsDark, RelativeSource={RelativeSource Self}}" Value="True">
+                    <Setter Property="Icon" Value="pack://application:,,,/Resources/torrent_light.ico"/>
+                </DataTrigger>
+            </Style.Triggers>
+        </Style>
+    </adonisControls:AdonisWindow.Style>
+
+    <!-- Add the log button to the title bar. -->
+    <adonisControls:AdonisWindow.TitleBarContent>
+        <StackPanel Orientation="Horizontal"
+                    HorizontalAlignment="Right">
+            <Button Content="📜" Click="LogButton_Click"
+                    Style="{DynamicResource {x:Static adonisUi:Styles.WindowButton}}"
+                    FontFamily="Segoe UI"
+                    FontSize="14"/>
+        </StackPanel>
+    </adonisControls:AdonisWindow.TitleBarContent>
+
+    <adonisControls:AdonisWindow.Resources>
+        <Style TargetType="TextBox" BasedOn="{StaticResource {x:Type TextBox}}">
+            <Setter Property="Margin" Value="5"/>
+            <Setter Property="Height" Value="26"/>
+            <Setter Property="TextWrapping" Value="NoWrap"/>
+            <Setter Property="VerticalContentAlignment" Value="Center"/>
+        </Style>
+
+        <Style TargetType="PasswordBox" BasedOn="{StaticResource {x:Type PasswordBox}}">
+            <Setter Property="Margin" Value="5"/>
+            <Setter Property="Height" Value="26"/>
+            <Setter Property="VerticalContentAlignment" Value="Center"/>
+        </Style>
+
+        <Style TargetType="Label" BasedOn="{StaticResource {x:Type Label}}">
+            <Setter Property="Margin" Value="5"/>
+            <Setter Property="VerticalContentAlignment" Value="Center"/>
+        </Style>
+
+        <Style TargetType="ComboBox" BasedOn="{StaticResource {x:Type ComboBox}}">
+            <Setter Property="Margin" Value="5"/>
+            <Setter Property="Height" Value="26"/>
+        </Style>
+
+        <Style TargetType="DatePicker" BasedOn="{StaticResource {x:Type DatePicker}}">
+            <Setter Property="Margin" Value="5"/>
+            <Setter Property="Height" Value="26"/>
+        </Style>
+
+        <Style TargetType="Button" BasedOn="{StaticResource {x:Type Button}}">
+            <Setter Property="Margin" Value="5"/>
+            <Setter Property="Height" Value="26"/>
+        </Style>
+
+        <Style x:Key="AccentButton" TargetType="Button" BasedOn="{StaticResource {x:Static adonisUi:Styles.AccentButton}}">
+            <Setter Property="Margin" Value="5"/>
+            <Setter Property="MinWidth" Value="80"/>
+            <Setter Property="Height" Value="26"/>
+        </Style>
+    </adonisControls:AdonisWindow.Resources>
+
+    <StackPanel>
+        <GroupBox>
+
+            <!-- Theme switcher -->
+            <GroupBox.Header>
+                <DockPanel>
+                    <TextBlock DockPanel.Dock="Left" Text="Common"/>
+                    <ToggleButton DockPanel.Dock="Right" Content="Dark" Style="{StaticResource {x:Static adonisUi:Styles.ToggleSwitch}}"
+                                  IsChecked="{Binding IsDark, RelativeSource={RelativeSource FindAncestor, AncestorType=local:MainWindow}}"/>
+                    <ContentPresenter/>
+                </DockPanel>
+            </GroupBox.Header>
+
+            <StackPanel>
+                <Grid Margin="{adonisUi:Space 0, 0, 0, 1}">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="Auto"/>
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition/>
+                        <RowDefinition/>
+                        <RowDefinition/>
+                    </Grid.RowDefinitions>
+
+                    <!-- Email/password -->
+                    <Label Grid.Column="0" Content="Archive Email:"/>
+                    <Grid Grid.Column="1" Grid.ColumnSpan="2">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+
+                        <TextBox Grid.Column="0" Text="{Binding ArchiveEmail}"/>
+                        <Label Grid.Column="1" Content="Archive Password:"/>
+                        <PasswordBox Grid.Column="2" x:Name="ArchivePasswordBox"/>
+                    </Grid>
+                    <Button Grid.Row="0" Grid.Column="4" Content="Save" Command="{Binding SaveCredentialsCommand}"/>
+
+                    <!-- Encode paths -->
+                    <Label Grid.Row="1" Grid.Column="0" Content="Modern File:"/>
+                    <TextBox Grid.Row="1" Grid.Column="1" Text="{Binding ModernEncodePath}"/>
+                    <Button x:Name="ModernBrowse" Grid.Row="1" Grid.Column="2"
+                            Content=". . ." Click="BrowseFilesButton_Click"/>
+
+                    <Label Grid.Row="2" Grid.Column="0" Content="Compatability File:"/>
+                    <TextBox Grid.Row="2" Grid.Column="1" Text="{Binding CompatabilityEncodePath}"/>
+                    <Button x:Name="CompatabilityBrowse" Grid.Row="2" Grid.Column="2"
+                            Content=". . ." Click="BrowseFilesButton_Click"/>
+
+                    <!-- Custom Drag'n'Drop Area -->
+                    <Border Grid.Row="1" Grid.RowSpan="2" Grid.Column="3" Margin="5" CornerRadius="6"
+                            Width="{Binding RelativeSource={RelativeSource Self}, Path=ActualHeight}"
+                            BorderBrush="{DynamicResource {x:Static adonisUi:Brushes.ForegroundBrush}}"
+                            BorderThickness="{DynamicResource {x:Static adonisUi:Dimensions.BorderThickness}}"
+                            AllowDrop="True" Drop="VideoFile_Drop" DragEnter="VideoFile_DragEnter">
+                        <Label Content="Drop" FontWeight="Normal" Margin="0" Padding="0"
+                               HorizontalAlignment="Stretch" VerticalAlignment="Stretch"
+                               HorizontalContentAlignment="Center" VerticalContentAlignment="Center"/>
+                    </Border>
+
+                </Grid>
+            </StackPanel>
+        </GroupBox>
+        <GroupBox Header="Upload">
+            <StackPanel>
+
+                <ProgressBar BorderThickness="0" Background="Transparent"
+                             Minimum="0.0" Maximum="1.0" Value="{Binding LoadingUploadProgress}"
+                             IsIndeterminate="{Binding LoadingUploadProgress, Converter={StaticResource IndeterminateConverter}}"
+                             Visibility="{Binding LoadingUpload, Converter={StaticResource VisibilityConverter}}"
+                             Height="4" Margin="{adonisUi:Space -1, -2, -1, 0-4}"/>
+
+                <Grid IsEnabled="{Binding LoadingUpload, Converter={StaticResource BooleanInverter}}">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="1*"/>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="2*"/>
+                        <ColumnDefinition Width="Auto"/>
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition/>
+                        <RowDefinition/>
+                        <RowDefinition/>
+                        <RowDefinition/>
+                        <RowDefinition/>
+                        <RowDefinition/>
+                        <RowDefinition/>
+                    </Grid.RowDefinitions>
+
+                    <Label Grid.Row="0" Grid.Column="0" Content="Page ID:"/>
+                    <TextBox Grid.Row="0" Grid.Column="1" Grid.ColumnSpan="3"
+                             Text="{Binding PageID, UpdateSourceTrigger=PropertyChanged}"
+                             adonisExtensions:WatermarkExtension.Watermark="Generated from file names, click Check to ensure uniqueness"/>
+                    <Button Content="Check" Grid.Column="4" Command="{Binding GetIdentifierCommand}"/>
+
+                    <Label Grid.Row="1" Grid.Column="0" Content="Page Title:"/>
+                    <TextBox Grid.Row="1" Grid.Column="1" Grid.ColumnSpan="3" Text="{Binding PageTitle}"/>
+
+                    <Label Grid.Row="2" Grid.Column="0" Content="Description:"/>
+                    <TextBox Grid.Row="2" Grid.Column="1" Grid.ColumnSpan="3"
+                             Text="{Binding Description, UpdateSourceTrigger=PropertyChanged}"
+                             adonisExtensions:WatermarkExtension.Watermark="Enter submission number (e.g. 1234) and click Get"/>
+                    <Button Content="Get" Grid.Row="2" Grid.Column="4" Command="{Binding GetSubmissionCommand}"/>
+
+                    <Label Grid.Row="3" Grid.Column="0" Content="Subject Tags:"/>
+                    <TextBox x:Name="TagsTextBox" Grid.Row="3" Grid.Column="1" Grid.ColumnSpan="3"
+                             Text="{Binding Tags, UpdateSourceTrigger=PropertyChanged, Delay=250}"
+                             adonisExtensions:WatermarkExtension.Watermark="Comma-separated list of up to 10 tags"/>
+                    <Button Content="Save" Grid.Row="3" Grid.Column="4" Command="{Binding SaveTagsCommand}"/>
+
+                    <Label Grid.Row="4" Grid.Column="0" Content="Creator:"/>
+                    <TextBox Grid.Row="4" Grid.Column="1" Grid.ColumnSpan="3" Text="{Binding Creator}"/>
+
+                    <Label Grid.Row="5" Grid.Column="0" Content="Date:"/>
+                    <DatePicker Grid.Row="5" Grid.Column="1" SelectedDate="{Binding Date}"/>
+
+                    <Label Grid.Row="5" Grid.Column="2" Content="Collection:"/>
+                    <ComboBox Grid.Row="5" Grid.Column="3"
+                              ItemsSource="{Binding Collections.Keys}" SelectedItem="{Binding SelectedCollection}"/>
+
+                    <Label Grid.Row="6" Grid.Column="0" Content="Language:"/>
+                    <ComboBox Grid.Row="6" Grid.Column="1"
+                              ItemsSource="{Binding Languages.Keys}" SelectedItem="{Binding SelectedLanguage}"/>
+
+                    <Label Grid.Row="6" Grid.Column="2" Content="License:"/>
+                    <ComboBox Grid.Row="6" Grid.Column="3"
+                              ItemsSource="{Binding Licenses.Keys}" SelectedItem="{Binding SelectedLicense}"/>
+
+                    <Button Grid.Row="6" Grid.Column="4" Content="Upload" Style="{StaticResource AccentButton}"
+                            Command="{Binding UploadCommand}"/>
+                </Grid>
+
+            </StackPanel>
+        </GroupBox>
+
+        <GroupBox Header="Videos">
+            <StackPanel>
+
+                <ProgressBar IsIndeterminate="{Binding LoadingVideos}" BorderThickness="0" Background="Transparent"
+                             Visibility="{Binding LoadingVideos, Converter={StaticResource VisibilityConverter}}"
+                             Height="4" Margin="{adonisUi:Space -1, -2, -1, 0-4}"/>
+
+                <Grid IsEnabled="{Binding LoadingVideos, Converter={StaticResource BooleanInverter}}">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="0"/>
+                        <ColumnDefinition Width="Auto"/>
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition/>
+                        <RowDefinition/>
+                        <RowDefinition/>
+                    </Grid.RowDefinitions>
+
+                    <Label Grid.Row="0" Grid.Column="0" Content="Recent Pages:"/>
+                    <ComboBox Grid.Row="0" Grid.Column="1" IsEnabled="{Binding SelectedSearchResult, Converter={StaticResource NotNullConverter}}"
+                              ItemsSource="{Binding SearchResults}" SelectedItem="{Binding SelectedSearchResult}"/>
+                    <Button Grid.Row="0" Grid.Column="2" Grid.ColumnSpan="2" Content="Search" Style="{StaticResource AccentButton}"
+                            Command="{Binding SearchRecentCommand}"/>
+
+                    <Label Grid.Row="1" Grid.Column="0" Content="Modern URL:"/>
+                    <TextBox Grid.Row="1" Grid.Column="1" Grid.ColumnSpan="2" Text="{Binding ModernEncodeUrl}" IsReadOnly="True"/>
+                    <Button x:Name="ModernCopyButton" Grid.Row="1" Grid.Column="3" Content="📋" ToolTip="Copy Modern URL"
+                            Click="CopyButton_Click" IsEnabled="{Binding ModernEncodeUrl, Converter={StaticResource NotWhitespaceConverter}}"/>
+
+                    <Label Grid.Row="2" Grid.Column="0" Content="Compatability URL:"/>
+                    <TextBox Grid.Row="2" Grid.Column="1" Grid.ColumnSpan="2" Text="{Binding CompatabilityEncodeUrl}" IsReadOnly="True"/>
+                    <Button Grid.Row="2" Grid.Column="3" Content="📋" ToolTip="Copy Compatability URL"
+                            Click="CopyButton_Click" IsEnabled="{Binding CompatabilityEncodeUrl, Converter={StaticResource NotWhitespaceConverter}}"/>
+                </Grid>
+            </StackPanel>
+        </GroupBox>
+
+        <GroupBox Header="Torrent">
+            <StackPanel>
+                <ProgressBar IsIndeterminate="{Binding LoadingTorrents}" BorderThickness="0" Background="Transparent"
+                             Visibility="{Binding LoadingTorrents, Converter={StaticResource VisibilityConverter}}"
+                             Height="4" Margin="{adonisUi:Space -1, -2, -1, 0-4}"/>
+
+                <Grid IsEnabled="{Binding LoadingTorrents, Converter={StaticResource BooleanInverter}}">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="Auto"/>
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition/>
+                        <RowDefinition/>
+                    </Grid.RowDefinitions>
+
+                    <Label Grid.Row="0" Grid.Column="0" Content="Modern Torrent:"/>
+                    <TextBox Grid.Row="0" Grid.Column="1" Text="{Binding ModernTorrentPath}" IsReadOnly="True"/>
+                    <Label Grid.Row="1" Grid.Column="0" Content="Compatability Torrent:"/>
+                    <TextBox Grid.Row="1" Grid.Column="1" Text="{Binding CompatabilityTorrentPath}" IsReadOnly="True"/>
+
+                    <Button Grid.Row="0" Grid.RowSpan="2" Grid.Column="2" VerticalAlignment="Center"
+                            Content="Build Torrents" Style="{StaticResource AccentButton}"
+                            Command="{Binding BuildTorrentsCommand}"/>
+                </Grid>
+            </StackPanel>
+        </GroupBox>
+
+    </StackPanel>
+</adonisControls:AdonisWindow>
