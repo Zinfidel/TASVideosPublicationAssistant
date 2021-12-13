@@ -1,6 +1,8 @@
 # TASVideos Publication Assistant
 A tool for automating some steps in the TASVideos publication process.
 
+![image](https://user-images.githubusercontent.com/1929934/145865073-940f894a-ce0a-4b29-a89c-6cb93bda9067.png)
+
 ## Summary
 The tool handles uploading of encodes to archive.org and creating torrents for the encodes. Many details for both of these processes are automatically determined rather than needing to be copied-and-pasted.
 
